@@ -101,7 +101,7 @@ class Flashcards:
         if exclude is None:
             exclude = list()
 
-        all_records = [record for i, record in self.find(keyword_regex, tags) if i not in exclude]
+        all_records = [(i, record) for i, record in self.find(keyword_regex, tags) if i not in exclude]
 
         if image_only:
             all_records = [record for record in all_records
@@ -110,9 +110,9 @@ class Flashcards:
         if len(all_records) == 0:
             return "There is no record matching the criteria."
 
-        record = random.choice(all_records)
+        i, record = random.choice(all_records)
 
-        return CardQuiz(record)
+        return CardQuiz(i, record)
 
     @property
     def tags(self):

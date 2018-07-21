@@ -18,13 +18,15 @@ CardTuple = nl.namedlist('CardTuple', [
 
 
 class CardQuiz:
-    def __init__(self, record):
+    def __init__(self, card_id, record):
         """
+        :param int card_id:
         :param dict|OrderedDict record:
         """
         assert isinstance(record, CardTuple)
 
         self.record = record
+        self.id = card_id
 
     def _repr_html_(self):
         html = self._parse_markdown(re.sub(r'\n+', '\n\n', self.record.front))
@@ -34,7 +36,8 @@ class CardQuiz:
         return html
 
     def show(self):
-        html = self._parse_markdown(re.sub(r'\n+', '\n\n', self.record.back))
+        html = markdown("**Card id:** {}".format(self.id))
+        html += self._parse_markdown(re.sub(r'\n+', '\n\n', self.record.back))
         html += markdown("**Keywords:** " + ', '.join(tag_reader(self.record.keywords)))
         html += markdown("**Tags:** " + ', '.join(tag_reader(self.record.tags)))
 
