@@ -105,7 +105,7 @@ class Flashcards:
         all_records = [(i, record) for i, record in self.find(keyword_regex, tags) if i not in exclude]
 
         if image_only:
-            all_records = [record for record in all_records
+            all_records = [(i, record) for i, record in all_records
                            if len(get_url_images_in_text(record.front)) > 0]
 
         if len(all_records) == 0:
