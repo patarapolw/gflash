@@ -13,16 +13,17 @@ from .utils import compare_list_match_regex
 
 
 class Flashcards:
-    SHEET_NAME = 'flashcards'
-    RANGE_NAME = '{}!A2:D'.format(SHEET_NAME)
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 
-    def __init__(self, sheet_id: str, clientsecrets_path=None, token_path=None):
+    def __init__(self, spreadsheet_id: str, sheet_name: str= 'flashcards', clientsecrets_path=None, token_path=None):
         """
-        :param str sheet_id: Google Sheets sheet od
+        :param str spreadsheet_id: Google Sheets spreadsheet id
+        :param str sheet_name: Google Sheets sheet_name
         :param str|Path clientsecrets_path:
         :param str|Path token_path:
         """
+        range = '{}!A2:D'.format(sheet_name)
+
         if clientsecrets_path is None:
             clientsecrets_path = Path('user/credentials.json')
             if not clientsecrets_path.parent.exists():
@@ -38,8 +39,8 @@ class Flashcards:
         service = build('sheets', 'v4', http=creds.authorize(Http()))
 
         # Call the Sheets API
-        result = service.spreadsheets().values().get(spreadsheetId=sheet_id,
-                                                     range=self.RANGE_NAME).execute()
+        result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id,
+                                                     range=range).execute()
         values = result.get('values', [])
         self.data = list()
         if not values:
