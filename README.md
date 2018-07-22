@@ -16,29 +16,8 @@ The back side of the card is shown.
 
 The `path_to_token` and `path_to_clientsecrets` can be omitted, and default to `user/token.json` and `user/credentials.json`, respectively.
 
-23
-
 `sheet_name` can be omitted and default to "flashcards".
 
-24
+`spreadsheet_id` can be extracted from the URL of the Google Sheets.
 
-​
-
-25
-
-More information about `token` and `clientsecrets` can be viewed at https://developers.google.com/sheets/api/guides/concepts
-
-26
-
-​
-
-27
-
-​
-
-More information about `token` and `clientsecrets` can be viewed at https://developers.google.com/sheets/api/guides/concepts
-
-`sheet_name` can be omitted and default to "flashcards".
-
-More information about `token` and `clientsecrets` can be viewed at https://developers.google.com/sheets/api/guides/concepts
-
+More information about `token`, `clientsecrets`, and `spreadsheet_id` can be viewed at https://developers.google.com/sheets/api/guides/concepts
