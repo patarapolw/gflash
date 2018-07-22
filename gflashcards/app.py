@@ -31,10 +31,10 @@ class Flashcards:
         if token_path is None:
             token_path = clientsecrets_path.with_name('token.json')
 
-        store = file.Storage('user/token.json')
+        store = file.Storage(str(token_path))
         creds = store.get()
         if not creds or creds.invalid:
-            flow = client.flow_from_clientsecrets('user/credentials.json', self.SCOPES)
+            flow = client.flow_from_clientsecrets(str(clientsecrets_path), self.SCOPES)
             creds = tools.run_flow(flow, store)
         service = build('sheets', 'v4', http=creds.authorize(Http()))
 
