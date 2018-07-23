@@ -22,6 +22,8 @@ The `path_to_token` and `path_to_clientsecrets` can be omitted, and default to `
 
 More information about `token`, `clientsecrets`, and `spreadsheet_id` can be viewed at https://developers.google.com/sheets/api/guides/concepts
 
+For more advanced usage, please see https://github.com/patarapolw/gflashcards/tree/master/docs
+
 ## Google Sheets formatting
 
 The first row is abandoned, but it should contain the header 'Front', 'Back', 'Keywords', and 'Tags', respectively.
@@ -32,7 +34,7 @@ To make a new line in Google Sheets, type Alt+Enter.
 
 ## Known bugs
 
-You might have to run `dev/quickstart.py` to get `token.json`.
+You might have to run `dev/create_google_token.py` to get `token.json`.
 
 ## Offline version, for Excel
 

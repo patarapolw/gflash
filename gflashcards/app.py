@@ -49,16 +49,6 @@ class Flashcards:
             for row in values:
                 self.data.append(CardTuple(*row))
 
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
-
-    def close(self):
-        pass
-
     def find(self, keyword_regex: str = '', tags=None):
         if tags is None:
             tags = list()
@@ -98,7 +88,7 @@ class Flashcards:
     #     finally:
     #         Timer(5, file_output.unlink).start()
 
-    def quiz(self, keyword_regex: str='', tags: list=None, exclude: list =None, image_only=False):
+    def iter_quiz(self, keyword_regex: str='', tags: list=None, exclude: list =None, image_only=False):
         if exclude is None:
             exclude = list()
 
@@ -111,9 +101,12 @@ class Flashcards:
         if len(all_records) == 0:
             return "There is no record matching the criteria."
 
-        i, record = random.choice(all_records)
+        random.shuffle(all_records)
+        for i, record in all_records:
+            yield CardQuiz(i, record)
 
-        return CardQuiz(i, record)
+    def quiz(self, keyword_regex: str='', tags: list=None, exclude: list =None, image_only=False):
+        return next(self.iter_quiz(keyword_regex, tags, exclude, image_only))
 
     @property
     def tags(self):
