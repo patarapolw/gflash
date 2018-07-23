@@ -1,6 +1,7 @@
 from IPython.display import Image
 import requests
 import json
+from pathlib import Path
 
 import sys
 try:
@@ -27,14 +28,13 @@ def save_image_from_clipboard():
 
 
 def save_image_from_file(filename: str):
-    header = {
+    headers = {
         'Authorization': 'Client-ID {}'.format(imgur['Client-ID'])
     }
     data = {
-        'image': filename
+        'image': Path(filename).read_bytes()
     }
-    r = requests.post('https://api.imgur.com/3/image', header=header, data=data)
-    print(r.json())
+    r = requests.post('https://api.imgur.com/3/image', headers=headers, data=data)
 
     img_url = r.json()['data']['link']
     print(img_url)
