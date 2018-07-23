@@ -38,6 +38,16 @@ You might have to run `dev/quickstart.py` to get `token.json`.
 
 Please see -- https://github.com/patarapolw/jupyter-flashcards
 
-## Image from clipboard and local images to URL
+## Image from clipboard
 
-You might try https://pasteboard.co/
+```python
+>>> from gflashcards import save_image_from_clipboard
+>>> save_image_from_clipboard()
+The image will be shown on Jupyter Notebook, with the corresponding filename shown and saved in local (user/clipboard/filename.png)
+```
+
+Dependencies: in Linux, `sudo apt install xclip`.
+
+## Image from local
+
+The image from local also works, with the ROOT as Jupyter Notebook's directory.

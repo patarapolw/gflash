@@ -1,11 +1,11 @@
 from markdown import markdown
+from urllib.parse import urlparse
 from IPython.display import HTML
 import re
 import namedlist as nl
 
 from .utils import get_url_images_in_text
 from .tags import tag_reader
-from .cache import file_to_base64
 
 CardTuple = nl.namedlist('CardTuple', [
     ('front', ''),
@@ -41,8 +41,12 @@ class CardQuiz:
 
         return HTML(html)
 
-    def _parse_markdown(self, text):
+    @staticmethod
+    def _parse_markdown(text):
         for url in get_url_images_in_text(text):
-            text = text.replace(url, '<img src="{}" />'.format(url))
+            if urlparse(url).netloc:
+                text = text.replace(url, '<img src="{}" />'.format(url))
+            else:
+                text = text.replace(url, '<img src="notebook/{}" />'.format(url))
 
         return markdown(text)
