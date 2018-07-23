@@ -14,5 +14,6 @@ oauth2client = "^4.1"
 markdown = "^2.6"
 namedlist = "^1.7"
 pillow = "^5.2"
+requests = "^2.19"
 
 [tool.poetry.dev-dependencies]

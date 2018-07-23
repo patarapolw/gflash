@@ -43,11 +43,11 @@ Please see -- https://github.com/patarapolw/jupyter-flashcards
 ```python
 >>> from gflashcards import save_image_from_clipboard
 >>> save_image_from_clipboard()
-The image will be shown on Jupyter Notebook, with the corresponding filename shown and saved in local (user/clipboard/filename.png)
+The image will be shown on Jupyter Notebook, with Imgur image URL shown.
 ```
 
 Dependencies: in Linux, `sudo apt install xclip`.
 
 ## Image from local
 
-The image from local also works, with the ROOT as Jupyter Notebook's directory.
+The image from local also works (`from gflashcards import save_image_from_file`). The image will be uploaded to Imgur server.

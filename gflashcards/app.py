@@ -25,7 +25,7 @@ class Flashcards:
         range = '{}!A2:D'.format(sheet_name)
 
         if clientsecrets_path is None:
-            clientsecrets_path = Path('user/credentials.json')
+            clientsecrets_path = Path('user/google/credentials.json')
             if not clientsecrets_path.parent.exists():
                 clientsecrets_path.parent.mkdir()
         if token_path is None:
