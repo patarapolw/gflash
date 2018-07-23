@@ -1,5 +1,5 @@
-from gflashcards.utils import get_url_images_in_text
+from datetime import datetime
+
 
 if __name__ == '__main__':
-    url = 'https://docs.python.org/3/library/re2.jpg https://docs.python.org/3/library/re.jpg'
-    print(get_url_images_in_text(url))
+    print(datetime.now().isoformat())

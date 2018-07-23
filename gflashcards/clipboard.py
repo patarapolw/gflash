@@ -1,4 +1,4 @@
-from uuid import uuid4
+from datetime import datetime
 from pathlib import Path
 from IPython.display import Image, display
 
@@ -10,7 +10,7 @@ except ImportError:
 
 
 def save_image_from_clipboard():
-    filename = Path('user/clipboard').joinpath(str(uuid4().hex) + '.png')
+    filename = Path('user/clipboard').joinpath(datetime.now().isoformat().replace(':', '.') + '.png')
 
     if sys.platform in ["win32", "darwin"]:
         im_data = ImageGrab.grabclipboard()
