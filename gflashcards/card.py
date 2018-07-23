@@ -1,18 +1,9 @@
 from markdown import markdown
-from urllib.parse import urlparse
 from IPython.display import HTML
-import re
-import namedlist as nl
+from typing import NamedTuple
 
-from .utils import get_url_images_in_text
 from .tags import tag_reader
-
-CardTuple = nl.namedlist('CardTuple', [
-    ('front', ''),
-    ('back', ''),
-    ('keywords', ''),
-    ('tags', '')
-])
+from .utils import parse_markdown
 
 
 class CardQuiz:
@@ -27,26 +18,26 @@ class CardQuiz:
         self.id = card_id
 
     def _repr_html_(self):
-        html = self._parse_markdown(re.sub(r'\n+', '\n\n', self.record.front))
-        # html += "<br />" + markdown(self.record.keywords)
-        # html += "<br />" + markdown(self.record.tags)
+        html = parse_markdown(self.record.front)
 
         return html
 
     def show(self):
         html = markdown("**Card id:** {}".format(self.id))
-        html += self._parse_markdown(re.sub(r'\n+', '\n\n', self.record.back))
+        html += parse_markdown(self.record.back)
         html += markdown("**Keywords:** " + ', '.join(tag_reader(self.record.keywords)))
         html += markdown("**Tags:** " + ', '.join(tag_reader(self.record.tags)))
 
         return HTML(html)
 
-    @staticmethod
-    def _parse_markdown(text):
-        for url in get_url_images_in_text(text):
-            if urlparse(url).netloc:
-                text = text.replace(url, '<img src="{}" />'.format(url))
-            else:
-                text = text.replace(url, '<img src="notebook/{}" />'.format(url))
 
-        return markdown(text)
+class CardTuple(NamedTuple):
+    front: str = ''
+    back: str = ''
+    keywords: str = ''
+    tags: str = ''
+
+    def to_formatted_tuple(self):
+        return parse_markdown(self.front, image_width=300), \
+               parse_markdown(self.back, image_width=300), \
+               self.keywords, self.tags

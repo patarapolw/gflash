@@ -1,6 +1,7 @@
 import re
 import random
 from pathlib import Path
+from pyhandsontable import view_table
 
 from apiclient.discovery import build
 from httplib2 import Http
@@ -73,20 +74,24 @@ class Flashcards:
             elif compare_list_match_regex(tags, tag_reader(self.data[i].tags)):
                 yield i, self.data[i]
 
-    # def preview(self, keyword_regex: str='', tags: list=None,
-    #             file_format='handsontable', width=800, height=300):
-    #
-    #     file_output = self.working_dir.joinpath('preview.{}.html'.format(file_format))
-    #
-    #     try:
-    #         return save_preview_table(array=[CardTuple._fields] +
-    #                                         [list(item) for item in self.find(keyword_regex, tags)],
-    #                                   dest_file_name=str(file_output.relative_to('.')),
-    #                                   image_dir=self.image_dir,
-    #                                   markdown_cols=[1, 2],
-    #                                   width=width, height=height)
-    #     finally:
-    #         Timer(5, file_output.unlink).start()
+    def preview(self, keyword_regex: str='', tags: list=None,
+                width=800, height=500):
+        config = {
+            'colHeaders': ['id'] + list(CardTuple._fields),
+            'columns': [
+                {'data': 0},
+                {'data': 1, 'renderer': 'html'},
+                {'data': 2, 'renderer': 'html'},
+                {'data': 3},
+                {'data': 4}
+            ]
+        }
+
+        return view_table(data=([[i] + list(record.to_formatted_tuple())
+                                 for i, record in self.find(keyword_regex, tags)]),
+                          width=width,
+                          height=height,
+                          config=config)
 
     def iter_quiz(self, keyword_regex: str='', tags: list=None, exclude: list =None, image_only=False):
         if exclude is None:

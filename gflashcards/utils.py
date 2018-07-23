@@ -1,4 +1,5 @@
 import re
+from markdown import markdown
 
 
 def get_url_images_in_text(text):
@@ -6,7 +7,7 @@ def get_url_images_in_text(text):
 
 
 def compare_list_match_regex(subset, superset):
-    def _sub_compare(sub_item):
+    def _sub_compare():
         for super_item in superset:
             if re.search(sub_item, super_item, flags=re.IGNORECASE):
                 return True
@@ -15,6 +16,14 @@ def compare_list_match_regex(subset, superset):
 
     result = []
     for sub_item in subset:
-        result.append(_sub_compare(sub_item))
+        result.append(_sub_compare())
 
     return all(result)
+
+
+def parse_markdown(text, image_width=500):
+    text = re.sub(r'\n+', '\n\n', text)
+    for url in get_url_images_in_text(text):
+        text = text.replace(url, '<img src="{}" width="{}"/>'.format(url, image_width))
+
+    return markdown(text)
