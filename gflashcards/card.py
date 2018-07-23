@@ -1,8 +1,6 @@
 from markdown import markdown
-from urllib.parse import urlparse
 from IPython.display import HTML
 import re
-from pathlib import Path
 import namedlist as nl
 
 from .utils import get_url_images_in_text
@@ -45,11 +43,6 @@ class CardQuiz:
 
     def _parse_markdown(self, text):
         for url in get_url_images_in_text(text):
-            if urlparse(url).netloc:
-                text = text.replace(url, '<img src="{}" />'.format(url))
-            else:
-                expected_tag = '<img src=""data:image/{};base64, {}" />'.format(Path(url).suffix, file_to_base64(url))
-                print("Please use {} instead of {}".format(expected_tag, url))
-                text = text.replace(url, expected_tag)
+            text = text.replace(url, '<img src="{}" />'.format(url))
 
         return markdown(text)

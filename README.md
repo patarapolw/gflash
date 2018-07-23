@@ -37,3 +37,7 @@ You might have to run `dev/quickstart.py` to get `token.json`.
 ## Offline version, for Excel
 
 Please see -- https://github.com/patarapolw/jupyter-flashcards
+
+## Image from clipboard and local images to URL
+
+You might try https://pasteboard.co/
