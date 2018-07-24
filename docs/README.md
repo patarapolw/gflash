@@ -13,6 +13,10 @@ Create a generator for building a non-repeating quiz.
 >>> card = next(iter_quiz)
 ```
 
+#### `Flashcards.preview()`
+
+Preview what `Flashcards.quiz()` and `Flashcards.iter_quiz()` would possible show.
+
 #### `Flashcards.tags`
 
 A property showing the list of all available tags.
