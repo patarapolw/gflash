@@ -2,6 +2,9 @@ import re
 import random
 from pathlib import Path
 from pyhandsontable import view_table
+from threading import Timer
+import os
+from bs4 import BeautifulSoup
 
 from apiclient.discovery import build
 from httplib2 import Http
@@ -80,18 +83,46 @@ class Flashcards:
             'colHeaders': ['id'] + list(CardTuple._fields),
             'columns': [
                 {'data': 0},
-                {'data': 1, 'renderer': 'html'},
-                {'data': 2, 'renderer': 'html'},
+                {'data': 1, 'renderer': 'markdownRenderer'},
+                {'data': 2, 'renderer': 'markdownRenderer'},
                 {'data': 3},
                 {'data': 4}
             ]
         }
 
-        return view_table(data=([[i] + list(record.to_formatted_tuple())
+        filename = 'temp.handsontable.html'
+        try:
+            table = view_table(data=([[i] + list(record.to_formatted_tuple())
                                  for i, record in self.find(keyword_regex, tags)]),
-                          width=width,
-                          height=height,
-                          config=config)
+                               width=width,
+                               height=height,
+                               config=config,
+                               filename=filename,
+                               autodelete=False)
+            with open(filename, 'r') as f:
+                soup = BeautifulSoup(f.read(), 'html.parser')
+
+            div = soup.new_tag('div')
+
+            js_markdown = soup.new_tag('script',
+                                       src='https://cdn.rawgit.com/showdownjs/showdown/1.8.6/dist/showdown.min.js')
+            js_custom = soup.new_tag('script')
+
+            with open('gflashcards/js/markdown-hot.js') as f:
+                js_custom.append(f.read())
+
+            div.append(js_markdown)
+            div.append(js_custom)
+
+            script_tag = soup.find('script')
+            soup.body.insert(soup.body.contents.index(script_tag) + 1, div)
+
+            with open(filename, 'w') as f:
+                f.write(str(soup))
+
+            return table
+        finally:
+            Timer(5, os.unlink, args=[filename]).start()
 
     def iter_quiz(self, keyword_regex: str='', tags: list=None, exclude: list =None, image_only=False):
         if exclude is None:

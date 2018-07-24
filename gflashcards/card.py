@@ -38,6 +38,4 @@ class CardTuple(NamedTuple):
     tags: str = ''
 
     def to_formatted_tuple(self):
-        return parse_markdown(self.front, image_width=300), \
-               parse_markdown(self.back, image_width=300), \
-               self.keywords, self.tags
+        return self.front, self.back, self.keywords, self.tags
