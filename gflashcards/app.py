@@ -87,7 +87,8 @@ class Flashcards:
                 {'data': 2, 'renderer': 'markdownRenderer'},
                 {'data': 3},
                 {'data': 4}
-            ]
+            ],
+            'rowHeaders': False
         }
 
         filename = 'temp.handsontable.html'
@@ -100,7 +101,7 @@ class Flashcards:
                                filename=filename,
                                autodelete=False)
             with open(filename, 'r') as f:
-                soup = BeautifulSoup(f.read(), 'html.parser')
+                soup = BeautifulSoup(f.read(), 'html5lib')
 
             div = soup.new_tag('div')
 
