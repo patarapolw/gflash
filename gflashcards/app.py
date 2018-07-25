@@ -79,24 +79,22 @@ class Flashcards:
 
     def preview(self, keyword_regex: str='', tags: list=None,
                 width=800, height=500):
+        renderers = {
+            1: 'markdownRenderer',
+            2: 'markdownRenderer'
+        }
         config = {
             'colHeaders': ['id'] + list(CardTuple._fields),
-            'columns': [
-                {'data': 0},
-                {'data': 1, 'renderer': 'markdownRenderer'},
-                {'data': 2, 'renderer': 'markdownRenderer'},
-                {'data': 3},
-                {'data': 4}
-            ],
             'rowHeaders': False
         }
 
         filename = 'temp.handsontable.html'
         try:
             table = view_table(data=([[i] + list(record.to_formatted_tuple())
-                                 for i, record in self.find(keyword_regex, tags)]),
+                                      for i, record in self.find(keyword_regex, tags)]),
                                width=width,
                                height=height,
+                               renderers=renderers,
                                config=config,
                                filename=filename,
                                autodelete=False)

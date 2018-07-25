@@ -583,7 +583,7 @@ name = "pyhandsontable"
 optional = false
 platform = "*"
 python-versions = ">=3.5"
-version = "0.1.10"
+version = "0.2.6-dev1"
 
 [package.dependencies]
 jinja2 = "^2.10"
