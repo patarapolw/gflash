@@ -1,4 +1,4 @@
-var img_regex = /([^\s<>"\']+\.(?:png|jpg|jpeg|gif))/g;
+var img_regex = /(?:(?=^)|(?=\s).|^)([^\s<>"\']+\.(?:png|jpg|jpeg|gif))/g;
 
 (function(Handsontable){
   function customRenderer(hotInstance, td, row, column, prop, value, cellProperties) {

@@ -3,7 +3,7 @@ from markdown import markdown
 
 
 def get_url_images_in_text(text):
-    return re.findall(r'((?:(?<=^)|(?<=\s))(?<!<img src=["\'])[^\s<>"\']+\.(?:png|jpg|jpeg|gif))', text)
+    return re.findall(r'((?:(?<=^)|(?<=\s))[^\s<>\"\']+\.(?:png|jpg|jpeg|gif))', text)
 
 
 def compare_list_match_regex(subset, superset):
