@@ -76,8 +76,7 @@ class Flashcards:
             elif compare_list_match_regex(tags, tag_reader(self.data[i].tags)):
                 yield i, self.data[i]
 
-    def view(self, keyword_regex: str='', tags: list=None, limit: int=None,
-                width=800, height=500):
+    def view(self, keyword_regex: str='', tags: list=None, width=800, height=500):
         renderers = {
             1: 'markdownRenderer',
             2: 'markdownRenderer'
@@ -90,7 +89,7 @@ class Flashcards:
         filename = Path('temp.handsontable.html')
         try:
             table = view_table(data=list(reversed([[i] + list(record.to_formatted_tuple())
-                                                   for i, record in self.find(keyword_regex, tags)]))[:limit],
+                                                   for i, record in self.find(keyword_regex, tags)])),
                                width=width,
                                height=height,
                                renderers=renderers,
@@ -130,11 +129,13 @@ class Flashcards:
             Timer(5, filename.unlink).start()
             # pass
 
-    def iter_quiz(self, keyword_regex: str='', tags: list=None, exclude: list =None, image_only=False):
+    def iter_quiz(self, keyword_regex: str='', tags: list=None, exclude: list =None, image_only=False, last: int=None):
         if exclude is None:
             exclude = list()
 
-        all_records = [(i, record) for i, record in self.find(keyword_regex, tags) if i not in exclude]
+        all_records = list(reversed([(i, record)
+                                     for i, record in self.find(keyword_regex, tags)
+                                     if i not in exclude]))[:last]
 
         if image_only:
             all_records = [(i, record) for i, record in all_records
@@ -147,8 +148,8 @@ class Flashcards:
         for i, record in all_records:
             yield CardQuiz(i, record)
 
-    def quiz(self, keyword_regex: str='', tags: list=None, exclude: list =None, image_only=False):
-        return next(self.iter_quiz(keyword_regex, tags, exclude, image_only))
+    def quiz(self, keyword_regex: str='', tags: list=None, exclude: list =None, image_only=False, last: int=None):
+        return next(self.iter_quiz(keyword_regex, tags, exclude, image_only, last))
 
     @property
     def tags(self):
