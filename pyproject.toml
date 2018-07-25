@@ -14,7 +14,7 @@ oauth2client = "^4.1"
 markdown = "^2.6"
 pillow = "^5.2"
 requests = "^2.19"
-#pyhandsontable = "^0.1.10"
+#pyhandsontable = "^0.2.7.1"
 bs4 = "^0.0.1"
 pyhandsontable = {path = "../pyhandsontable"}
 
