@@ -129,13 +129,14 @@ class Flashcards:
             Timer(5, filename.unlink).start()
             # pass
 
-    def iter_quiz(self, keyword_regex: str='', tags: list=None, exclude: list =None, image_only=False, last: int=None):
+    def iter_quiz(self, keyword_regex: str='', tags: list=None, exclude: list =None, image_only=False,
+                  begin:int=None, last: int=None):
         if exclude is None:
             exclude = list()
 
         all_records = list(reversed([(i, record)
                                      for i, record in self.find(keyword_regex, tags)
-                                     if i not in exclude]))[:last]
+                                     if i not in exclude]))[begin:last]
 
         if image_only:
             all_records = [(i, record) for i, record in all_records
@@ -148,8 +149,9 @@ class Flashcards:
         for i, record in all_records:
             yield CardQuiz(i, record)
 
-    def quiz(self, keyword_regex: str='', tags: list=None, exclude: list =None, image_only=False, last: int=None):
-        return next(self.iter_quiz(keyword_regex, tags, exclude, image_only, last))
+    def quiz(self, keyword_regex: str='', tags: list=None, exclude: list =None, image_only=False,
+             begin: int=None, last: int=None):
+        return next(self.iter_quiz(keyword_regex, tags, exclude, image_only, begin=begin, last=last))
 
     @property
     def tags(self):
