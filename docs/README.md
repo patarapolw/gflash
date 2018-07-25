@@ -13,9 +13,11 @@ Create a generator for building a non-repeating quiz.
 >>> card = next(iter_quiz)
 ```
 
-#### `Flashcards.preview()`
+#### `Flashcards.view()`
 
-Preview what `Flashcards.quiz()` and `Flashcards.iter_quiz()` would possible show.
+View what `Flashcards.quiz()` and `Flashcards.iter_quiz()` would possibly show.
+
+Also, you might actually learn more from a table, rather than from a flashcard.
 
 #### `Flashcards.tags`
 

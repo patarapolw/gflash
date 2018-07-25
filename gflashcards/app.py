@@ -1,6 +1,5 @@
 import re
 import random
-from pathlib import Path
 from pyhandsontable import view_table
 from threading import Timer
 from pathlib import Path
@@ -77,7 +76,7 @@ class Flashcards:
             elif compare_list_match_regex(tags, tag_reader(self.data[i].tags)):
                 yield i, self.data[i]
 
-    def preview(self, keyword_regex: str='', tags: list=None,
+    def view(self, keyword_regex: str='', tags: list=None, limit: int=None,
                 width=800, height=500):
         renderers = {
             1: 'markdownRenderer',
@@ -90,8 +89,8 @@ class Flashcards:
 
         filename = Path('temp.handsontable.html')
         try:
-            table = view_table(data=([[i] + list(record.to_formatted_tuple())
-                                      for i, record in self.find(keyword_regex, tags)]),
+            table = view_table(data=list(reversed([[i] + list(record.to_formatted_tuple())
+                                                   for i, record in self.find(keyword_regex, tags)]))[:limit],
                                width=width,
                                height=height,
                                renderers=renderers,
