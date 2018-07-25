@@ -1,4 +1,5 @@
 var img_regex = /(?:(?=^)|(?=\s).|^)([^\s<>"\']+\.(?:png|jpg|jpeg|gif))/g;
+var markdownConverter = new showdown.Converter;
 
 (function(Handsontable){
   function customRenderer(hotInstance, td, row, column, prop, value, cellProperties) {
@@ -7,8 +8,7 @@ var img_regex = /(?:(?=^)|(?=\s).|^)([^\s<>"\']+\.(?:png|jpg|jpeg|gif))/g;
     text = text.replace(img_regex,
       "<img src='$1' width=200 />");
 
-    var converter = new showdown.Converter;
-    td.innerHTML = converter.makeHtml(text);
+    td.innerHTML = markdownConverter.makeHtml(text);
 
     return td;
   }
