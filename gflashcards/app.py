@@ -3,7 +3,7 @@ import random
 from pathlib import Path
 from pyhandsontable import view_table
 from threading import Timer
-import os
+from pathlib import Path
 from bs4 import BeautifulSoup
 
 from apiclient.discovery import build
@@ -88,7 +88,7 @@ class Flashcards:
             'rowHeaders': False
         }
 
-        filename = 'temp.handsontable.html'
+        filename = Path('temp.handsontable.html')
         try:
             table = view_table(data=([[i] + list(record.to_formatted_tuple())
                                       for i, record in self.find(keyword_regex, tags)]),
@@ -96,10 +96,17 @@ class Flashcards:
                                height=height,
                                renderers=renderers,
                                config=config,
-                               filename=filename,
+                               filename=str(filename),
                                autodelete=False)
-            with open(filename, 'r') as f:
+            with filename.open('r') as f:
                 soup = BeautifulSoup(f.read(), 'html5lib')
+
+            style = soup.new_tag('style')
+
+            with Path('gflashcards/renderer/markdown-hot.css').open('r') as f:
+                style.append(f.read())
+
+            soup.head.append(style)
 
             div = soup.new_tag('div')
 
@@ -107,7 +114,7 @@ class Flashcards:
                                        src='https://cdn.rawgit.com/showdownjs/showdown/1.8.6/dist/showdown.min.js')
             js_custom = soup.new_tag('script')
 
-            with open('gflashcards/js/markdown-hot.js') as f:
+            with Path('gflashcards/renderer/markdown-hot.js').open('r') as f:
                 js_custom.append(f.read())
 
             div.append(js_markdown)
@@ -116,12 +123,13 @@ class Flashcards:
             script_tag = soup.find('script', {'id': 'generateHandsontable'})
             soup.body.insert(soup.body.contents.index(script_tag), div)
 
-            with open(filename, 'w') as f:
+            with filename.open('w') as f:
                 f.write(str(soup))
 
             return table
         finally:
-            Timer(5, os.unlink, args=[filename]).start()
+            Timer(5, filename.unlink).start()
+            # pass
 
     def iter_quiz(self, keyword_regex: str='', tags: list=None, exclude: list =None, image_only=False):
         if exclude is None:

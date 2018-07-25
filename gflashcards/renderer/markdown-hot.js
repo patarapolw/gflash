@@ -5,10 +5,12 @@ var markdownConverter = new showdown.Converter;
   function customRenderer(hotInstance, td, row, column, prop, value, cellProperties) {
     var text = Handsontable.helper.stringify(value);
     text = text.replace(/\n+/g, "\n\n");
+//    text = text.replace('\n', "<br />");
     text = text.replace(img_regex,
       "<img src='$1' width=200 />");
 
     td.innerHTML = markdownConverter.makeHtml(text);
+//    td.innerHTML = text;
 
     return td;
   }
